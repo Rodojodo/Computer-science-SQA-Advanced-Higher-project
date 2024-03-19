@@ -1,3 +1,5 @@
+// Name: Geronimo Jones   SCN: 120763237
+
 #include "DatabaseManager.h"
 #include "SQLiteDatabase.h"
 #include "Hash/Blake3.h"

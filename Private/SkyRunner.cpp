@@ -1,5 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// Name: Geronimo Jones   SCN: 120763237
 
 #include "SkyRunner.h"
 
