@@ -131,20 +131,25 @@ void UMenuInteraction::NativeConstruct()
 
 void UMenuInteraction::ChangeScreenAndSetUsername(int mode, FString Username)
 {
+    // Log that we're about to change screens
     UE_LOG(LogTemp, Log, TEXT("ChangingScreen"));
 
-
+    // Check if MainMenuManager is valid
     if (!MainMenuManager)
     {
+        // Log a warning if MainMenuManager is not found
         UE_LOG(LogTemp, Warning, TEXT("AMainMenuManager not found in the world!"));
-        return;
+        return; // Return early to prevent potential crashes
     }
 
+    // Check the mode to determine if we need to set the username
     if (mode == 1)
     {
+        // Set the provided username to MainMenuManager->Username
         MainMenuManager->Username = Username;
     }
 
+    // Change the screen using MainMenuManager
     MainMenuManager->ChangeScreen(NextScreen);
 }
 
@@ -260,17 +265,27 @@ void UMenuInteraction::SortBikeAndSetLooks(int SortingCriteria)
         StopIndex -= 1;
     }
     TArrayContainer->ClearChildren();
-    // Create text blocks and set their properties
+    // Create text blocks for each element in the HoverBikeArray and set their properties
     for (int i = 0; i < ArrayLen; ++i)
     {
-        FString ResultString = HoverBikeArray[i]->GetName(); // Assuming GetName() returns the name
-        UTextBlock* TextBlock = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass());
+        FString ResultString = HoverBikeArray[i]->GetName(); // Get the name of the current HoverBike
+        HoverBikeArray[i]->Destroy();
+        UTextBlock* TextBlock = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass()); // Construct a new TextBlock widget
         if (TextBlock)
         {
+            // Set the text of the TextBlock to the name of the HoverBike
             TextBlock->SetText(FText::FromString(ResultString));
+            
+            // Set the color of the text
             TextBlock->SetColorAndOpacity(FLinearColor::FromSRGBColor(FColor(0x2F, 0x3E, 0x46, 0xFF)));
+            
+            // Set text justification to center
             TextBlock->SetJustification(ETextJustify::Center);
+            
+            // Add the TextBlock as a child to the TArrayContainer
             TArrayContainer->AddChild(TextBlock);
+            
+            // Set properties of the TextBlock's slot (positioning and sizing)
             UHorizontalBoxSlot* TextSlot = Cast<UHorizontalBoxSlot>(TextBlock->Slot);
             if (TextSlot)
             {
@@ -282,14 +297,15 @@ void UMenuInteraction::SortBikeAndSetLooks(int SortingCriteria)
         }
     }
 
-    // Clear and populate the image container with sorted buttons
-    ImageContainer->ClearChildren();
+    // Clear and repopulate the image container with sorted buttons
+    ImageContainer->ClearChildren(); // Clear any existing children of the ImageContainer
     for (UButton* Button : ButtonArray)
     {
-        ImageContainer->AddChild(Button);
+        ImageContainer->AddChild(Button); // Add each button from ButtonArray to the ImageContainer
         UHorizontalBoxSlot* ButtonSlot = Cast<UHorizontalBoxSlot>(Button->Slot);
         if (ButtonSlot)
         {
+            // Set properties of the Button's slot (positioning and sizing)
             ButtonSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
             ButtonSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
             ButtonSlot->SetPadding(FMargin(0));
@@ -300,26 +316,33 @@ void UMenuInteraction::SortBikeAndSetLooks(int SortingCriteria)
 
 void UMenuInteraction::QueryButtonHandler()
 {
+    // Log that the button has been pressed
     UE_LOG(LogTemp, Log, TEXT("Button pressed!"));
 
+    // Check if the required text boxes are valid
     if (!UsernameTextBox || !PasswordTextBox)
     {
+        // Log an error if text boxes are not found and return early
         UE_LOG(LogTemp, Error, TEXT("Text boxes not found"));
         return;
     }
 
+    // Retrieve text input from the text boxes
     FString Username = UsernameTextBox->GetText().ToString();
     FString Password = PasswordTextBox->GetText().ToString();
     FString ConfirmPassword = ConfirmPasswordTextBox ? ConfirmPasswordTextBox->GetText().ToString() : FString();
 
+    // Attempt to spawn an instance of ADatabaseManager
     ADatabaseManager* DatabaseManager = Cast<ADatabaseManager>(SpawnActor(ADatabaseManager::StaticClass()));
     if (!DatabaseManager)
     {
+        // Log an error if ADatabaseManager fails to spawn and return early
         UE_LOG(LogTemp, Error, TEXT("ADatabaseManager not spawned successfully"));
         return;
     }
 
     FString QueryResult;
+    // Perform login or user creation query based on the presence of ConfirmPassword
     if (ConfirmPassword.IsEmpty())
     {
         QueryResult = DatabaseManager->Login(*Username, *Password);
@@ -329,15 +352,19 @@ void UMenuInteraction::QueryButtonHandler()
         QueryResult = DatabaseManager->CreateUser(*Username, *Password, *ConfirmPassword);
     }
 
+    // Check the query result
     if (QueryResult == "Success")
     {
+        // If the query was successful, change the screen and set the username
         ChangeScreenAndSetUsername(1, *Username);
     }
     else
     {
+        // If the query failed, display an error message
         IncorrectPopUp->SetText(FText::FromString(QueryResult));
         IncorrectPopUp->SetVisibility(ESlateVisibility::Visible);
 
+        // Hide and then show the error message again after a short delay
         if (IncorrectPopUp->GetVisibility() == ESlateVisibility::Visible)
         {
             IncorrectPopUp->SetVisibility(ESlateVisibility::Hidden);
@@ -346,6 +373,7 @@ void UMenuInteraction::QueryButtonHandler()
         }
     }
 
+    // Clean up by destroying the DatabaseManager instance
     DatabaseManager->Destroy();
 }
 
@@ -353,9 +381,11 @@ void UMenuInteraction::QueryButtonHandler()
 
 AActor* UMenuInteraction::SpawnActor(TSubclassOf<AActor> ActorClass)
 {
+    // Get the current world
     UWorld* World = GetWorld();
     if (!World)
     {
+        // Log an error if the world could not be found and return nullptr
         UE_LOG(LogTemp, Error, TEXT("World could not be found when spawning actor"));
         return nullptr;
     }
@@ -367,6 +397,7 @@ AActor* UMenuInteraction::SpawnActor(TSubclassOf<AActor> ActorClass)
     // Spawn and return the actor
     return World->SpawnActor<AActor>(ActorClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 }
+
 
 UButton* UMenuInteraction::CreateButtonWithImage(FString Path, int bike)
 {
