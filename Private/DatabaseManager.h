@@ -19,30 +19,9 @@ public:
 	// Sets default values for this actor's properties
 	ADatabaseManager();
 
-
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-
 	UFUNCTION(BlueprintCallable, Category = "SQL Queries")
 	FString CreateUser(FString username, FString password, FString confirmedPass);
 
-
 	UFUNCTION(BlueprintCallable, Category = "SQL Queries")
 	FString Login(FString username, FString password);
-
-
-
-
-protected:
-
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-
-
-
-private:
-// 	UFUNCTION()
-// 	FString HashPassword(FString password);
 };

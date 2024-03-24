@@ -17,7 +17,4 @@ class ASkyRunner : public AHoverBike
 public:
     // Sets default values for this hoverbike
     ASkyRunner();
-
-    // // Called when the game starts or when spawned
-    virtual void BeginPlay() override;
 };

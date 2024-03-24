@@ -14,19 +14,15 @@ class AMainMenuManager : public AActor
 {
 	GENERATED_BODY()
 	
+
 public:	
 	// Sets default values for this actor's properties
 	AMainMenuManager();
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widgets")
-	TSubclassOf<UUserWidget> NextScreen;
-	UUserWidget* WidgetInstance;
 
 	UFUNCTION()
 	void ChangeScreen(TSubclassOf<UUserWidget> WidgetClass);
+
 
 	UFUNCTION()
 	FString GetUsername();
@@ -46,11 +42,14 @@ public:
 	UFUNCTION()
 	void SetChosenTrack(UTexture2D* NewChosenTrack);
 
-protected:
+
+private:	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:	
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+	TSubclassOf<UUserWidget> NextScreen;
+	UUserWidget* WidgetInstance;
 
 	UPROPERTY()
 	FString Username;
@@ -60,5 +59,4 @@ private:
 
 	UPROPERTY()
 	UTexture2D* ChosenTrack;
-
 };

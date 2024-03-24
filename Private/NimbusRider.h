@@ -17,7 +17,4 @@ class ANimbusRider : public AHoverBike
 public:
     // Sets default values for this hoverbike
     ANimbusRider();
-
-    // // Called when the game starts or when spawned
-    virtual void BeginPlay() override;
 };

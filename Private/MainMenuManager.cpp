@@ -22,14 +22,6 @@ void AMainMenuManager::BeginPlay()
 	ChangeScreen(NextScreen);
 }
 
-// Called every frame
-void AMainMenuManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
-
 void AMainMenuManager::ChangeScreen(TSubclassOf<UUserWidget> WidgetClass)
 {
     APlayerController* PlayerControllerRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);

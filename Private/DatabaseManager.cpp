@@ -14,24 +14,6 @@ ADatabaseManager::ADatabaseManager()
 
 }
 
-
-
-
-// Called when the game starts or when spawned
-void ADatabaseManager::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-
-
-
-// Called every frame
-void ADatabaseManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 // Function to create a new user from details passed in. Auto creates userID which auto-increments for every new user
 FString ADatabaseManager::CreateUser(FString username, FString password, FString confirmedPass)
 {
@@ -123,9 +105,6 @@ FString ADatabaseManager::CreateUser(FString username, FString password, FString
 
 	return result;
 }
-
-
-
 
 // Function to login users from details passed in. Checks to see if anyone in database matches entered details
 FString ADatabaseManager::Login(FString username, FString password)

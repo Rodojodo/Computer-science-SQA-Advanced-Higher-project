@@ -11,6 +11,7 @@ class AHoverBike : public AActor
 {
 	GENERATED_BODY()
 	
+
 public:	
 	// Sets default values for this actor's properties
 	AHoverBike();
@@ -28,9 +29,7 @@ public:
 	virtual float GetHandling() const;
 	
 
-
 protected:
-
 	UPROPERTY()
 	FString name;
 
@@ -42,11 +41,4 @@ protected:
 
 	UPROPERTY()
 	float handling;
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 };

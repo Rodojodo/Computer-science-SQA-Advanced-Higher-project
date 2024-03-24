@@ -17,7 +17,4 @@ class AAeroSwift : public AHoverBike
 public:
     // Sets default values for this hoverbike
     AAeroSwift();
-
-    // // Called when the game starts or when spawned
-    virtual void BeginPlay() override;
 };
