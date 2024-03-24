@@ -13,7 +13,6 @@ AMainMenuManager::AMainMenuManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
 }
 
 // Called when the game starts or when spawned
@@ -31,18 +30,13 @@ void AMainMenuManager::Tick(float DeltaTime)
 }
 
 
-
-
-// In a function where you want to add the widget to the viewport
 void AMainMenuManager::ChangeScreen(TSubclassOf<UUserWidget> WidgetClass)
 {
-    UE_LOG(LogTemp, Log, TEXT("Changing Screen Phase:1"));
     APlayerController* PlayerControllerRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
     PlayerControllerRef->SetShowMouseCursor(true);
     // Make sure WidgetClass is set
     if (WidgetClass)
     {
-        UE_LOG(LogTemp, Log, TEXT("Changing Screen Phase:2"));
         // Get the first player controller from the world
         APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 
@@ -58,3 +52,15 @@ void AMainMenuManager::ChangeScreen(TSubclassOf<UUserWidget> WidgetClass)
     }
     else{UE_LOG(LogTemp, Error, TEXT("Widget class not true"))}
 }
+
+FString AMainMenuManager::GetUsername(){return Username;}
+
+void AMainMenuManager::SetUsername(FString NewUsername){Username = NewUsername;}
+
+UButton* AMainMenuManager::GetChosenBike(){return ChosenBike;}
+
+void AMainMenuManager::SetChosenBike(UButton* NewChosenBike){ChosenBike = NewChosenBike;}
+
+UTexture2D* AMainMenuManager::GetChosenTrack(){return ChosenTrack;}
+
+void AMainMenuManager::SetChosenTrack(UTexture2D* NewChosenTrack){ChosenTrack = NewChosenTrack;}

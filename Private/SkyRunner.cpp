@@ -10,6 +10,7 @@ ASkyRunner::ASkyRunner()
 	topSpeed = 1500.f;
     acceleration = 750.f;
     handling = 750.f;
+    // UE_LOG(LogTemp, Log, TEXT("%s created, parameters: %f, %f, %f"), *name, topSpeed, acceleration, handling);
 }
 
 // Called when the game starts or when spawned

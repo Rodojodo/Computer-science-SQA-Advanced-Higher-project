@@ -76,7 +76,7 @@ FString ADatabaseManager::CreateUser(FString username, FString password, FString
 				// If the sql query ran correctly then sends the success message to the console. If it didn't run correctly then it would display the error message.
 				if (success)
 				{
-					UE_LOG(LogTemp, Log, TEXT("User created executed successfully!"));
+					UE_LOG(LogTemp, Log, TEXT("User created successfully!"));
 					result = TEXT("Success");
 				}
 				else

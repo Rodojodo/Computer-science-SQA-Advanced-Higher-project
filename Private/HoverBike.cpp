@@ -11,29 +11,24 @@ AHoverBike::AHoverBike()
 	topSpeed = 1000.f;
     acceleration = 1000.f;
     handling = 1000.f;
-
 }
 FString AHoverBike::GetName() const
 {
-    // Implement default behavior here if needed
     return name; // Default top speed
 }
 
 float AHoverBike::GetTopSpeed() const
 {
-    // Implement default behavior here if needed
     return topSpeed; // Default top speed
 }
 
 float AHoverBike::GetAcceleration() const
 {
-    // Implement default behavior here if needed
     return acceleration; // Default top speed
 }
 
 float AHoverBike::GetHandling() const
 {
-    // Implement default behavior here if needed
     return handling; // Default top speed
 }
 

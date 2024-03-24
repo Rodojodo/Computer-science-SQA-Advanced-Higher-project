@@ -44,14 +44,14 @@ void UMenuInteraction::NativeConstruct()
     FinalUsername = Cast<UTextBlock>(GetWidgetFromName(TEXT("TFinalUsername")));
     if (FinalUsername)
     {
-        FinalUsername->SetText(FText::FromString(MainMenuManager->Username));
+        FinalUsername->SetText(FText::FromString(MainMenuManager->GetUsername()));
     }
 
     // Set FinalTrack image
     FinalTrack = Cast<UImage>(GetWidgetFromName(TEXT("IFinalTrack")));
     if (FinalTrack)
     {
-        UTexture2D* Texture = MainMenuManager->ChosenTrack;
+        UTexture2D* Texture = MainMenuManager->GetChosenTrack();
         if (Texture)
         {
             FSlateBrush Brush;
@@ -72,7 +72,7 @@ void UMenuInteraction::NativeConstruct()
     ChosenContainer = Cast<UHorizontalBox>(GetWidgetFromName(TEXT("ChosenContainer")));
     if (ChosenContainer)
     {
-        UButton* BFinalBike = MainMenuManager->ChosenBike;
+        UButton* BFinalBike = MainMenuManager->GetChosenBike();
         ChosenContainer->AddChild(BFinalBike);
         UHorizontalBoxSlot* ButtonSlot = Cast<UHorizontalBoxSlot>(BFinalBike->Slot);
         if (ButtonSlot)
@@ -130,9 +130,6 @@ void UMenuInteraction::NativeConstruct()
 
 void UMenuInteraction::ChangeScreenAndSetUsername(int mode, FString Username)
 {
-    // Log that we're about to change screens
-    UE_LOG(LogTemp, Log, TEXT("ChangingScreen"));
-
     // Check if MainMenuManager is valid
     if (!MainMenuManager)
     {
@@ -145,7 +142,7 @@ void UMenuInteraction::ChangeScreenAndSetUsername(int mode, FString Username)
     if (mode == 1)
     {
         // Set the provided username to MainMenuManager->Username
-        MainMenuManager->Username = Username;
+        MainMenuManager->SetUsername(Username);
     }
 
     // Change the screen using MainMenuManager
@@ -158,39 +155,38 @@ void UMenuInteraction::ChangeScreenDefault(){ ChangeScreenAndSetUsername(); }
 
 void UMenuInteraction::SelectTrack1()
 {
-    MainMenuManager->ChosenTrack = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, TEXT("/Script/Engine.Texture2D'/Game/Images/track1.track1'")));
+    MainMenuManager->SetChosenTrack(Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, TEXT("/Script/Engine.Texture2D'/Game/Images/track1.track1'"))));
     ChangeScreenAndSetUsername();
 }
 
 void UMenuInteraction::SelectTrack2()
 {
-    MainMenuManager->ChosenTrack = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, TEXT("/Script/Engine.Texture2D'/Game/Images/track2.track2'")));
+    MainMenuManager->SetChosenTrack(Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, TEXT("/Script/Engine.Texture2D'/Game/Images/track2.track2'"))));
     ChangeScreenAndSetUsername();
 }
 
 void UMenuInteraction::SelectTrack3()
 {
-    MainMenuManager->ChosenTrack = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, TEXT("/Script/Engine.Texture2D'/Game/Images/track3.track3'")));
+    MainMenuManager->SetChosenTrack(Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, TEXT("/Script/Engine.Texture2D'/Game/Images/track3.track3'"))));
     ChangeScreenAndSetUsername();
 }
 
-
 void UMenuInteraction::SelectBike1()
 {
+    MainMenuManager->SetChosenBike(CreateButtonWithImage("/Script/Engine.Texture2D'/Game/Images/IAeroSwift.IAeroSwift'"));
     ChangeScreenAndSetUsername();
-    MainMenuManager->ChosenBike = CreateButtonWithImage("/Script/Engine.Texture2D'/Game/Images/IAeroSwift.IAeroSwift'");
 }
 
 void UMenuInteraction::SelectBike2()
 {
+    MainMenuManager->SetChosenBike(CreateButtonWithImage("/Script/Engine.Texture2D'/Game/Images/INimbusRider.INimbusRider'"));
     ChangeScreenAndSetUsername();
-    MainMenuManager->ChosenBike = CreateButtonWithImage("/Script/Engine.Texture2D'/Game/Images/INimbusRider.INimbusRider'");
 }
 
 void UMenuInteraction::SelectBike3()
 {
+    MainMenuManager->SetChosenBike(CreateButtonWithImage("/Script/Engine.Texture2D'/Game/Images/ISkyRunner.ISkyRunner'"));
     ChangeScreenAndSetUsername();
-    MainMenuManager->ChosenBike = CreateButtonWithImage("/Script/Engine.Texture2D'/Game/Images/ISkyRunner.ISkyRunner'");
 }
 
 
@@ -315,9 +311,6 @@ void UMenuInteraction::SortBikeAndSetLooks(int SortingCriteria)
 
 void UMenuInteraction::QueryButtonHandler()
 {
-    // Log that the button has been pressed
-    UE_LOG(LogTemp, Log, TEXT("Button pressed!"));
-
     // Check if the required text boxes are valid
     if (!UsernameTextBox || !PasswordTextBox)
     {
