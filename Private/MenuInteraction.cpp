@@ -127,8 +127,6 @@ void UMenuInteraction::NativeConstruct()
     }
 }
 
-
-
 void UMenuInteraction::ChangeScreenAndSetUsername(int mode, FString Username)
 {
     // Check if MainMenuManager is valid
